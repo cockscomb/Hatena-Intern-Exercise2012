@@ -53,16 +53,31 @@ sub set_template_path {
   $self->{template} = join '', @template;
 }
 
+sub format {
+  my $self = shift;
+  my $placeholder = shift;
+  my $format_string = shift;
+
+  # Format when format string was set.
+  my $formatted;
+  if ($format_string) {
+    $formatted = sprintf('%' . $format_string, $placeholder);
+  } else {
+    $formatted = $placeholder;
+  }
+  # Escape.
+  CGI::escapeHTML($formatted);
+}
+
 sub render {
   my $self = shift;
   my %placeholders = %{$_[0]};
 
   my $rendered = $self->get_template;
   foreach my $key (keys %placeholders) {
-    # Escape HTML.
-    my $placeholder = CGI::escapeHTML($placeholders{$key});
-    # Replace placeholder.
-    $rendered =~ s/{%\s+(?:$key)\s+%}/$placeholder/g;
+    my $placeholder = $placeholders{$key};
+    # Replace placeholder with format string.
+    $rendered =~ s/{%\s+(?:$key)(?::(?<fmt>[ +-0#]?[0-9.]*[A-Za-z]+))?\s+%}/$self->format($placeholder, $+{fmt})/eg;
   }
   $rendered
 }

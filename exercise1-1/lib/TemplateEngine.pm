@@ -10,6 +10,9 @@ use CGI;
 use Encode;
 use IO::File;
 
+# Set UTF-8 encoding to STDOUT.
+binmode(STDOUT, ':utf8');
+
 sub new {
   my $class = shift;
   my %options = @_;

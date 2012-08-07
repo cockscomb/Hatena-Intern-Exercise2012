@@ -5,10 +5,20 @@ var main = function() {
         source: source
     });
 
-    document.getElementById('result').innerHTML = template.render({
-        title: '6月25日の日記',
-        content: 'ランチを食べすぎました'
+    document.getElementById('result').innerHTML = '';
+
+    var twitterSearch = new TwitterSearch({
+        callback: function(tweet) {
+            console.log(tweet);
+
+            document.getElementById('result').innerHTML = document.getElementById('result').innerHTML + template.render({
+                from_user_name: tweet.from_user_name,
+                profile_image_url: tweet.profile_image_url,
+                text: tweet.text
+            });
+        }
     });
+    twitterSearch.search('はてな');
 };
 
 document.addEventListener('DOMContentLoaded', main);

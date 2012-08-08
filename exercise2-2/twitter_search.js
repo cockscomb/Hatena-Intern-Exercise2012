@@ -20,7 +20,7 @@ TwitterSearch.prototype = {
 
     search: function(searchWord) {
         var that = this;
-        var twitterSearchAPIURL = 'http://search.twitter.com/search.json?q=' + encodeURI(searchWord) + '&rpp=5&include_entities=true&result_type=mixed';
+        var twitterSearchAPIURL = 'http://search.twitter.com/search.json?q=' + encodeURI(searchWord) + '&rpp=25&include_entities=true&result_type=recent';
 
         var oXHR = new XMLHttpRequest();
         oXHR.open('GET', twitterSearchAPIURL, true);

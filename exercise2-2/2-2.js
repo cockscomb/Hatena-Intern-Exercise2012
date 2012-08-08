@@ -12,7 +12,9 @@ var main = function() {
             document.getElementById('result').innerHTML = document.getElementById('result').innerHTML + template.render({
                 from_user_name: tweet.from_user_name,
                 profile_image_url: tweet.profile_image_url,
-                text: tweet.text
+                text: tweet.text,
+                source_url: 'http://twitter.com/' + tweet.from_user + '/status/' + tweet.id_str,
+                created_at: new Date(tweet.created_at).toLocaleString()
             });
         }
     });

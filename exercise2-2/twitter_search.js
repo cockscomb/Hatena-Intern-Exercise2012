@@ -1,5 +1,5 @@
 var TwitterSearch = function(options) {
-    this.callback = options.callback;
+    this.resultsHandler = options.resultsHandler;
 };
 
 TwitterSearch.prototype = {
@@ -12,7 +12,9 @@ TwitterSearch.prototype = {
 
         var result = JSON.parse(resultJSONText);
         for (var tweetIndex in result.results) {
-            this.callback(result.results[tweetIndex]);
+            if (typeof this.resultsHandler === 'function') {
+                this.resultsHandler(result.results[tweetIndex]);
+            }
         }
     },
 

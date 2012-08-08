@@ -6,7 +6,7 @@ var main = function() {
     });
 
     var twitterSearch = new TwitterSearch({
-        callback: function(tweet) {
+        resultsHandler: function(tweet) {
             console.log(tweet);
 
             document.getElementById('result').innerHTML = document.getElementById('result').innerHTML + template.render({

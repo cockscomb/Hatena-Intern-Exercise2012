@@ -5,8 +5,6 @@ var main = function() {
         source: source
     });
 
-    document.getElementById('result').innerHTML = '';
-
     var twitterSearch = new TwitterSearch({
         callback: function(tweet) {
             console.log(tweet);
@@ -18,7 +16,12 @@ var main = function() {
             });
         }
     });
-    twitterSearch.search('はてな');
+
+    var searchField = document.getElementById('search_field');
+    searchField.addEventListener('change', function(event) {
+        document.getElementById('result').innerHTML = '';
+        twitterSearch.search(searchField.value);
+    });
 };
 
 document.addEventListener('DOMContentLoaded', main);

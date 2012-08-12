@@ -6,7 +6,12 @@ var main = function() {
     });
 
     var twitterSearch = new TwitterSearch({
-        resultsHandler: function(tweet) {
+    });
+
+    var searchField = document.getElementById('search_field');
+    searchField.addEventListener('change', function(event) {
+        document.getElementById('result').innerHTML = '';
+        twitterSearch.search(searchField.value, function(tweet) {
             console.log(tweet);
 
             document.getElementById('result').innerHTML = document.getElementById('result').innerHTML + template.render({
@@ -16,13 +21,7 @@ var main = function() {
                 source_url: 'http://twitter.com/' + tweet.from_user + '/status/' + tweet.id_str,
                 created_at: new Date(tweet.created_at).toLocaleString()
             });
-        }
-    });
-
-    var searchField = document.getElementById('search_field');
-    searchField.addEventListener('change', function(event) {
-        document.getElementById('result').innerHTML = '';
-        twitterSearch.search(searchField.value);
+        });
     });
 };
 

@@ -1,38 +1,25 @@
-var TwitterSearch = function(options) {
-    this.resultsHandler = options.resultsHandler;
-};
+var TwitterSearch = function() {};
 
 TwitterSearch.prototype = {
 
-    parseResult: function(resultJSONText) {
+    parseResult: function(result) {
 
-        if (resultJSONText === '') {
-            return;
-        }
-
-        var result = JSON.parse(resultJSONText);
+        console.log(result);
         for (var tweetIndex in result.results) {
-            if (typeof this.resultsHandler === 'function') {
-                this.resultsHandler(result.results[tweetIndex]);
+            if (typeof TwitterSearch.prototype.resultsHandler === 'function') {
+                TwitterSearch.prototype.resultsHandler(result.results[tweetIndex]);
             }
         }
     },
 
-    search: function(searchWord) {
+    search: function(searchWord, resultsHandler) {
         var that = this;
-        var twitterSearchAPIURL = 'http://search.twitter.com/search.json?q=' + encodeURI(searchWord) + '&rpp=25&include_entities=true&result_type=recent';
+        var twitterSearchAPIURL = 'http://search.twitter.com/search.json?q=' + encodeURI(searchWord) + '&rpp=25&include_entities=true&result_type=recent&callback=TwitterSearch.prototype.parseResult';
+        TwitterSearch.prototype.resultsHandler = resultsHandler;
 
-        var oXHR = new XMLHttpRequest();
-        oXHR.open('GET', twitterSearchAPIURL, true);
-        oXHR.onreadystatechange = function (oEvent) {
-            if (oXHR.readyState === 4) {
-                if (oXHR.status === 200) {
-                    that.parseResult(oXHR.responseText);
-                } else {
-                    console.log('Error', oXHR.statusText);
-                }
-            }
-        };
-        oXHR.send(null);
+        var target = document.createElement('script');
+        target.charset = 'utf-8';
+        target.src = twitterSearchAPIURL;
+        document.body.appendChild(target);
     }
 };
